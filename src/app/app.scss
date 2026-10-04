@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-page-outlet {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 75px;
+}

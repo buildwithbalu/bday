@@ -1,0 +1,61 @@
+<section id="vitopia" class="section-wrapper vitopia-section">
+  <div class="container-wide">
+    <div class="text-center">
+      <span class="section-tag">{{ content.vitopia.chapterTag }}</span>
+      <h2 class="section-heading">{{ content.vitopia.heading }}</h2>
+      <p class="section-subheading">{{ content.vitopia.subheading }}</p>
+    </div>
+
+    <!-- Main Highlight Memory Card -->
+    <div class="vitopia-card glass-panel">
+      <div class="card-glow-accent"></div>
+      
+      <div class="memory-content-box">
+        <div class="badge-pill">
+          <span class="heart-pulse">🛡️</span>
+          <span>A Sister's Unconditional Protection</span>
+        </div>
+
+        <blockquote class="memory-quote font-serif">
+          “{{ content.vitopia.quote }}”
+        </blockquote>
+
+        <div class="memory-author">
+          <div class="gold-line"></div>
+          <span class="author-text">A memory forever kept close to my heart</span>
+        </div>
+      </div>
+
+      <!-- Photo Gallery with Click to Zoom -->
+      <div class="vitopia-gallery">
+        <div 
+          *ngFor="let img of content.vitopia.images; let i = index" 
+          class="polaroid-frame"
+          (click)="openImage(img)"
+          [class.tilted-left]="i === 0"
+          [class.tilted-right]="i === 1">
+          
+          <div class="polaroid-pin">📌</div>
+          
+          <div class="polaroid-img-wrapper">
+            <img [src]="img.url" [alt]="img.caption" loading="lazy">
+            <div class="img-hover-overlay">
+              <span class="zoom-icon">🔍 View Photo</span>
+            </div>
+          </div>
+
+          <p class="polaroid-caption">{{ img.caption }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter Pagination Stepper -->
+    <app-chapter-nav 
+      prevRoute="/beginning" 
+      prevLabel="Chapter 1: Our Beginning" 
+      nextRoute="/memories" 
+      nextLabel="Chapter 3: Memories" 
+      chapterIndex="Chapter 2 of 7">
+    </app-chapter-nav>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+<section id="letter" class="section-wrapper letter-section">
+  <div class="container-narrow">
+    <div class="text-center">
+      <span class="section-tag">{{ letter.chapterTag }}</span>
+      <h2 class="section-heading">{{ letter.heading }}</h2>
+      <p class="section-subheading">{{ letter.subheading }}</p>
+    </div>
+
+    <!-- Realistic Parchment Letter Document -->
+    <div class="parchment-container">
+      <!-- Gold Wax Seal -->
+      <div class="wax-seal">
+        <div class="wax-seal-inner">
+          <span class="seal-letter">{{ sealInitial }}</span>
+        </div>
+      </div>
+
+      <div class="letter-paper">
+        <div class="paper-texture-overlay"></div>
+
+        <div class="letter-inner-content">
+          <!-- Salutation -->
+          <h3 class="letter-salutation font-handwritten">
+            {{ letter.salutation }}
+          </h3>
+
+          <!-- Letter Paragraphs -->
+          <div class="letter-paragraphs">
+            <p *ngFor="let p of letter.paragraphs" class="letter-p">
+              {{ p }}
+            </p>
+          </div>
+
+          <!-- Birthday Wish Banner -->
+          <div class="letter-wish font-handwritten">
+            {{ letter.birthdayWish }}
+          </div>
+
+          <!-- Sign-off -->
+          <div class="letter-signature font-handwritten">
+            {{ letter.signOff }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter Pagination Stepper -->
+    <app-chapter-nav 
+      prevRoute="/secret-room" 
+      prevLabel="Chapter 5: Secret Room" 
+      nextRoute="/reveal" 
+      nextLabel="Final Chapter: Reveal ✨" 
+      chapterIndex="Chapter 6 of 7">
+    </app-chapter-nav>
+  </div>
+</section>

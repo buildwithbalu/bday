@@ -1,0 +1,142 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: sharedMemories
+    // Document ID: auto-generated document UID
+    // Fields:
+    //   - url: string (required, valid http/https URL, max length 1500) - Media download URL
+    //   - mediaType: string (required, 'image' or 'video') - Type of memory media
+    //   - caption: string (required, max length 1000) - Caption describing the memory
+    //   - title: string (optional, max length 200) - Optional title of the memory
+    //   - date: string (optional, max length 100) - Date string of the memory
+    //   - uploadedBy: string (required, max length 100) - Display name or role of uploader
+    //   - userId: string (required, immutable) - Firebase Auth UID of uploader
+    //   - createdAt: timestamp (required, immutable) - Creation timestamp
+    //
+    // Collection: personalNotes
+    // Document ID: 'shared' (under /personalNotes/{docId})
+    // Fields:
+    //   - thambiNote: string (optional, max length 10000) - Note written by Thambi
+    //   - thambiUpdatedAt: timestamp (optional) - Timestamp of Thambi's update
+    //   - likkiNote: string (optional, max length 10000) - Note written by Likki
+    //   - likkiUpdatedAt: timestamp (optional) - Timestamp of Likki's update
+    //   - updatedAt: timestamp (required) - Timestamp of latest note update
+    //   - lastUpdatedBy: string (required, max length 100) - Name/identifier of last updater
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the authenticated user owns the document by matching UID
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Validate that a URL is a valid http/https string within size limits
+    function isValidUrl(url) {
+      return url is string &&
+        url.size() > 0 &&
+        url.size() <= 1500 &&
+        (url.matches('^https://.*') || url.matches('^http://.*'));
+    }
+
+    // Validate optional string: if present, must be string within max length
+    function isValidOptionalString(data, field, maxLen) {
+      return !(field in data) || (data[field] is string && data[field].size() <= maxLen);
+    }
+
+    // Validate optional timestamp: if present, must be a timestamp
+    function isValidOptionalTimestamp(data, field) {
+      return !(field in data) || (data[field] is timestamp);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    // Domain validator for sharedMemories documents (called on BOTH create and update)
+    function isValidSharedMemory(data) {
+      return data.keys().hasAll(['url', 'mediaType', 'caption', 'uploadedBy', 'userId', 'createdAt']) &&
+        data.keys().hasOnly(['url', 'mediaType', 'caption', 'title', 'date', 'uploadedBy', 'userId', 'createdAt']) &&
+        isValidUrl(data.url) &&
+        data.mediaType in ['image', 'video'] &&
+        data.caption is string && data.caption.size() <= 1000 &&
+        isValidOptionalString(data, 'title', 200) &&
+        isValidOptionalString(data, 'date', 100) &&
+        data.uploadedBy is string && data.uploadedBy.size() > 0 && data.uploadedBy.size() <= 100 &&
+        data.userId is string && data.userId.size() > 0 && data.userId.size() <= 128 &&
+        data.createdAt is timestamp;
+    }
+
+    // Domain validator for personalNotes documents (called on BOTH create and update)
+    function isValidPersonalNotes(data) {
+      return data.keys().hasAll(['updatedAt', 'lastUpdatedBy']) &&
+        data.keys().hasOnly(['thambiNote', 'thambiUpdatedAt', 'likkiNote', 'likkiUpdatedAt', 'updatedAt', 'lastUpdatedBy']) &&
+        data.updatedAt is timestamp &&
+        data.lastUpdatedBy is string && data.lastUpdatedBy.size() > 0 && data.lastUpdatedBy.size() <= 100 &&
+        isValidOptionalString(data, 'thambiNote', 10000) &&
+        isValidOptionalTimestamp(data, 'thambiUpdatedAt') &&
+        isValidOptionalString(data, 'likkiNote', 10000) &&
+        isValidOptionalTimestamp(data, 'likkiUpdatedAt');
+    }
+
+    // ===============================================================
+    // Collection Match Rules
+    // ===============================================================
+
+    // 1. Shared Memories Collection
+    match /sharedMemories/{memoryId} {
+      // Authenticated users (Likki & Thambi) can read all shared memories
+      allow read: if isAuthenticated();
+
+      // Only authenticated users can create memories; userId must match auth.uid and payload must be valid
+      allow create: if isAuthenticated() &&
+        request.resource.data.userId == request.auth.uid &&
+        isValidSharedMemory(request.resource.data);
+
+      // Authenticated users can update memories; userId and createdAt are immutable
+      allow update: if isAuthenticated() &&
+        request.resource.data.userId == resource.data.userId &&
+        request.resource.data.createdAt == resource.data.createdAt &&
+        isValidSharedMemory(request.resource.data);
+
+      // Authenticated users can delete memories
+      allow delete: if isAuthenticated() &&
+        (resource.data.userId == request.auth.uid || isAuthenticated());
+    }
+
+    // 2. Personal Notes Collection
+    match /personalNotes/{docId} {
+      // Authenticated users can read personal notes
+      allow read: if isAuthenticated();
+
+      // Authenticated users can create or update notes with schema validation
+      allow create: if isAuthenticated() &&
+        isValidPersonalNotes(request.resource.data);
+
+      allow update: if isAuthenticated() &&
+        isValidPersonalNotes(request.resource.data);
+
+      // Allow delete for authenticated users
+      allow delete: if isAuthenticated();
+    }
+
+    // 3. Default Deny all other collections and documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+<div class="chapter-nav-wrapper">
+  <div class="chapter-nav-container">
+    <!-- Previous Chapter Link -->
+    <div class="nav-side nav-left">
+      <a *ngIf="prevRoute" [routerLink]="prevRoute" class="chapter-btn prev-btn">
+        <span class="btn-arrow">←</span>
+        <div class="btn-text-group">
+          <span class="btn-hint">Previous</span>
+          <span class="btn-title">{{ prevLabel || 'Previous Chapter' }}</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Chapter Indicator Pill -->
+    <div *ngIf="chapterIndex" class="nav-center">
+      <span class="chapter-pill">{{ chapterIndex }}</span>
+    </div>
+
+    <!-- Next Chapter Link -->
+    <div class="nav-side nav-right">
+      <a *ngIf="nextRoute" [routerLink]="nextRoute" class="chapter-btn next-btn">
+        <div class="btn-text-group">
+          <span class="btn-hint">Next</span>
+          <span class="btn-title">{{ nextLabel || 'Next Chapter' }}</span>
+        </div>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</div>

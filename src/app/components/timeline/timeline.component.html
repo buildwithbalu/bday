@@ -1,0 +1,101 @@
+<section id="timeline" class="section-wrapper timeline-section">
+  <div class="container-wide">
+    <div class="text-center">
+      <span class="section-tag">{{ content.timeline.chapterTag }}</span>
+      <h2 class="section-heading">{{ content.timeline.heading }}</h2>
+      <p class="section-subheading">{{ content.timeline.subheading }}</p>
+    </div>
+
+    <!-- The Vertical Timeline Spine -->
+    <div class="timeline-container">
+      <div class="timeline-spine"></div>
+
+      <div 
+        *ngFor="let item of content.timeline.events; let i = index" 
+        class="timeline-block"
+        [id]="item.id"
+        [class.block-left]="i % 2 === 0"
+        [class.block-right]="i % 2 !== 0">
+        
+        <!-- Center Date Node -->
+        <div class="timeline-node">
+          <span class="node-icon">{{ item.icon }}</span>
+        </div>
+
+        <!-- Timeline Card Content -->
+        <div class="timeline-card glass-panel glass-panel-interactive">
+          <div class="card-header">
+            <span class="date-badge">
+              <span class="cal-icon">🗓️</span>
+              {{ item.date }}
+            </span>
+            <span class="category-tag">{{ item.tag }}</span>
+          </div>
+
+          <h3 class="card-title">{{ item.title }}</h3>
+          <h4 *ngIf="item.subtitle" class="card-subtitle">{{ item.subtitle }}</h4>
+
+          <!-- Quote if applicable -->
+          <blockquote *ngIf="item.quote" class="timeline-quote font-serif">
+            “{{ item.quote }}”
+          </blockquote>
+
+          <p *ngIf="!item.quote" class="timeline-desc">{{ item.description }}</p>
+
+          <!-- Funny Cards specifically for Ambedkar trip -->
+          <div *ngIf="item.funnyCards" class="funny-cards-grid">
+            <div 
+              *ngFor="let card of item.funnyCards" 
+              class="funny-card"
+              [class.highlight]="card.highlight">
+              <span class="fc-icon">{{ card.icon }}</span>
+              <div class="fc-content">
+                <span class="fc-title">{{ card.title }}</span>
+                <p class="fc-text">{{ card.text }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Photo & Video Thumbnails Gallery -->
+          <div *ngIf="item.images && item.images.length > 0" class="gallery-row card-gallery">
+            <div 
+              *ngFor="let media of item.images" 
+              class="gallery-thumbnail"
+              (click)="openMedia(media, item)"
+              [title]="media.caption">
+              
+              <!-- Video Preview Thumbnail -->
+              <ng-container *ngIf="isVideo(media)">
+                <div class="video-thumb-container">
+                  <video [src]="media.url" preload="metadata" muted playsinline></video>
+                  <div class="video-play-badge">
+                    <span class="play-icon-tri">▶</span>
+                    <span class="video-text-tag">VIDEO</span>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Image Preview Thumbnail -->
+              <ng-container *ngIf="!isVideo(media)">
+                <img [src]="media.url" [alt]="media.caption" loading="lazy">
+              </ng-container>
+
+              <div class="thumb-overlay">
+                <span class="thumb-caption">{{ media.caption }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter Pagination Stepper -->
+    <app-chapter-nav 
+      prevRoute="/vitopia" 
+      prevLabel="Chapter 2: VITOPIA" 
+      nextRoute="/quiz" 
+      nextLabel="Chapter 4: Sister Quiz" 
+      chapterIndex="Chapter 3 of 7">
+    </app-chapter-nav>
+  </div>
+</section>

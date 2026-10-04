@@ -1,0 +1,225 @@
+/* ==========================================================================
+   "TO MY SISTER ❤️" — GLOBAL CINEMATIC DESIGN SYSTEM
+   Dark Obsidian & Starlight Gold Luxury Aesthetic
+   ========================================================================== */
+
+:root {
+  --bg-obsidian: #08080d;
+  --bg-surface-1: #0f0f18;
+  --bg-surface-2: #161624;
+  --bg-glass: rgba(18, 18, 28, 0.72);
+  --bg-glass-card: rgba(26, 26, 40, 0.65);
+  --border-gold-subtle: rgba(212, 175, 55, 0.22);
+  --border-gold-glow: rgba(255, 215, 0, 0.45);
+  --border-glass: rgba(255, 255, 255, 0.08);
+
+  --color-gold: #e2b755;
+  --color-gold-light: #fbe3a1;
+  --color-gold-deep: #b38728;
+  --color-rose: #ff6584;
+  --color-rose-deep: #e84393;
+  --color-text-bright: #ffffff;
+  --color-text-main: #f1f3f7;
+  --color-text-muted: #9ba1b5;
+  --color-text-dim: #646a80;
+
+  --font-title: 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-letter: 'Caveat', 'Dancing Script', cursive;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+
+  --gold-gradient: linear-gradient(135deg, #ffe082 0%, #d4af37 50%, #aa771c 100%);
+  --gold-text-gradient: linear-gradient(135deg, #fff2cc 0%, #dfb15b 45%, #b38728 100%);
+  --rose-text-gradient: linear-gradient(135deg, #ff9bb2 0%, #ff5277 100%);
+  --dark-gradient: radial-gradient(circle at 50% 20%, #151525 0%, #08080d 85%);
+
+  --shadow-gold-sm: 0 0 15px rgba(212, 175, 55, 0.2);
+  --shadow-gold-lg: 0 0 35px rgba(212, 175, 55, 0.35);
+  --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-obsidian);
+  background-image: var(--dark-gradient);
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #08080d;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d4af37 0%, #3e3215 100%);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fbe3a1;
+}
+
+/* Selection */
+::selection {
+  background: rgba(212, 175, 55, 0.35);
+  color: #fff;
+}
+
+/* Utility Classes */
+.gold-text {
+  background: var(--gold-text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.rose-text {
+  background: var(--rose-text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.gold-glow {
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-title {
+  font-family: var(--font-title);
+}
+
+.font-handwritten {
+  font-family: var(--font-letter);
+}
+
+.container-narrow {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.container-wide {
+  width: 92%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.glass-panel {
+  background: var(--bg-glass-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold-subtle);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.glass-panel-interactive {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s ease, 
+              box-shadow 0.4s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-gold-glow);
+    box-shadow: 0 22px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.25);
+  }
+}
+
+/* Section Common Styling */
+.section-wrapper {
+  position: relative;
+  padding: 100px 0;
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    padding: 70px 0;
+  }
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--color-gold-light);
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.section-heading {
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.section-subheading {
+  color: var(--color-text-muted);
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Floating Animations */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseGoldGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

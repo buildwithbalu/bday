@@ -1,0 +1,113 @@
+<section id="quiz" class="section-wrapper quiz-section">
+  <div class="container-narrow">
+    <div class="text-center">
+      <span class="section-tag">{{ content.quiz.chapterTag }}</span>
+      <h2 class="section-heading">{{ content.quiz.heading }}</h2>
+      <p class="section-subheading">{{ content.quiz.subheading }}</p>
+    </div>
+
+    <div class="quiz-card glass-panel" *ngIf="!isCompleted()">
+      <!-- Progress Bar -->
+      <div class="quiz-progress-bar">
+        <div 
+          class="progress-fill" 
+          [style.width.%]="((currentQuestionIndex() + 1) / questions.length) * 100">
+        </div>
+      </div>
+
+      <div class="quiz-step-indicator">
+        Question {{ currentQuestionIndex() + 1 }} of {{ questions.length }}
+      </div>
+
+      <!-- Question Title -->
+      <h3 class="quiz-question-title">
+        {{ currentQuestion.question }}
+      </h3>
+
+      <!-- Options List -->
+      <div class="quiz-options-list">
+        <button
+          *ngFor="let opt of currentQuestion.options; let optIdx = index"
+          class="option-btn"
+          [class.selected]="selectedAnswers()[currentQuestion.id]?.optionIdx === optIdx"
+          (click)="selectOption(optIdx)">
+          
+          <div class="option-check">
+            <span *ngIf="selectedAnswers()[currentQuestion.id]?.optionIdx === optIdx">✓</span>
+          </div>
+          <span class="option-label">{{ opt.label }}</span>
+        </button>
+      </div>
+
+      <!-- Funny Reaction Pill -->
+      <div 
+        class="reaction-box" 
+        *ngIf="selectedAnswers()[currentQuestion.id]"
+        [class.show]="selectedAnswers()[currentQuestion.id]">
+        <span class="reaction-icon">💬</span>
+        <span class="reaction-text">{{ selectedAnswers()[currentQuestion.id]?.reaction }}</span>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="quiz-footer">
+        <button 
+          class="quiz-nav-btn prev"
+          [disabled]="currentQuestionIndex() === 0"
+          (click)="prevQuestion()">
+          ← Previous
+        </button>
+
+        <button 
+          class="quiz-nav-btn next"
+          [disabled]="selectedAnswers()[currentQuestion.id] === undefined"
+          (click)="nextQuestion()">
+          {{ currentQuestionIndex() === questions.length - 1 ? 'Finish & Claim Access 💛' : 'Next Question →' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Completed Access Granted Banner -->
+    <div class="quiz-complete-card glass-panel" *ngIf="isCompleted()">
+      <div class="access-badge-circle">
+        <span class="key-icon">🔑</span>
+      </div>
+
+      <h3 class="access-title gold-text">
+        Access Granted, Sister 💛
+      </h3>
+
+      <p class="access-subtitle font-serif">
+        "You passed with flying colors! 100% verified certified best sister in the universe."
+      </p>
+
+      <div class="access-stats">
+        <div class="stat-pill">
+          <span class="stat-label">Sister Score:</span>
+          <span class="stat-num">{{ score() }} / {{ questions.length }} Correct Facts</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Status:</span>
+          <span class="stat-highlight">Vault Ready ✨</span>
+        </div>
+      </div>
+
+      <div class="access-actions">
+        <a class="unlock-room-btn" routerLink="/secret-room">
+          <span>Proceed To Secret Room 🔒</span>
+        </a>
+        <button class="retake-btn" (click)="resetQuiz()">
+          Retake Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- Chapter Pagination Stepper -->
+    <app-chapter-nav 
+      prevRoute="/memories" 
+      prevLabel="Chapter 3: Memories" 
+      nextRoute="/secret-room" 
+      nextLabel="Chapter 5: Secret Room" 
+      chapterIndex="Chapter 4 of 7">
+    </app-chapter-nav>
+  </div>
+</section>

@@ -1,0 +1,49 @@
+<nav class="cinema-nav">
+  <div class="nav-container">
+    <!-- Brand Title -->
+    <a class="nav-brand" routerLink="/home" (click)="closeMobileMenu()">
+      <span class="heart-icon">❤️</span>
+      <span class="brand-text">{{ content.navigation.siteTitle }}</span>
+      <span class="brand-nickname">{{ content.profile.nickname }}</span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <div class="nav-links">
+      <a class="nav-btn" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a class="nav-btn" routerLink="/beginning" routerLinkActive="active">Our Beginning</a>
+      <a class="nav-btn" routerLink="/vitopia" routerLinkActive="active">VITOPIA</a>
+      <a class="nav-btn" routerLink="/memories" routerLinkActive="active">Memories</a>
+      <a class="nav-btn" routerLink="/quiz" routerLinkActive="active">Sister Quiz</a>
+      <a class="nav-btn secret-btn" routerLink="/secret-room" routerLinkActive="active">
+        <span class="lock-icon">🔒</span> Secret Room
+      </a>
+      <a class="nav-btn" routerLink="/letter" routerLinkActive="active">The Letter</a>
+      <a class="nav-btn highlight-btn" routerLink="/reveal" routerLinkActive="active">
+        ✨ Reveal
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger Button -->
+    <div class="nav-actions">
+      <button class="hamburger-btn" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen()" aria-label="Toggle Navigation Menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" [class.open]="isMobileMenuOpen()">
+    <div class="mobile-drawer-links">
+      <a class="mobile-nav-btn" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">Home</a>
+      <a class="mobile-nav-btn" routerLink="/beginning" routerLinkActive="active" (click)="closeMobileMenu()">1. Our Beginning</a>
+      <a class="mobile-nav-btn" routerLink="/vitopia" routerLinkActive="active" (click)="closeMobileMenu()">2. VITOPIA</a>
+      <a class="mobile-nav-btn" routerLink="/memories" routerLinkActive="active" (click)="closeMobileMenu()">3. Memories Timeline</a>
+      <a class="mobile-nav-btn" routerLink="/quiz" routerLinkActive="active" (click)="closeMobileMenu()">4. Sister Quiz</a>
+      <a class="mobile-nav-btn secret" routerLink="/secret-room" routerLinkActive="active" (click)="closeMobileMenu()">🔒 5. Secret Room</a>
+      <a class="mobile-nav-btn" routerLink="/letter" routerLinkActive="active" (click)="closeMobileMenu()">6. The Letter</a>
+      <a class="mobile-nav-btn reveal" routerLink="/reveal" routerLinkActive="active" (click)="closeMobileMenu()">✨ 7. Birthday Reveal</a>
+    </div>
+  </div>
+</nav>

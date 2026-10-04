@@ -1,0 +1,42 @@
+<section id="beginning" class="section-wrapper beginning-section">
+  <div class="container-narrow">
+    <div class="text-center">
+      <span class="section-tag">{{ content.beginning.chapterTag }}</span>
+      <h2 class="section-heading">{{ content.beginning.heading }}</h2>
+      <p *ngIf="content.beginning.subheading" class="section-subheading">{{ content.beginning.subheading }}</p>
+    </div>
+
+    <!-- Poetic Quote Box -->
+    <div class="poetic-card glass-panel">
+      <div class="quote-mark">“</div>
+      <p class="poetic-line">{{ content.beginning.quoteLine1 }}</p>
+      <p class="poetic-line">{{ content.beginning.quoteLine2 }}</p>
+      <p class="poetic-line gold-text">{{ content.beginning.quoteLine3 }}</p>
+      <div class="quote-mark end">”</div>
+    </div>
+
+    <!-- Story Cards Grid -->
+    <div class="story-grid">
+      <div 
+        *ngFor="let card of content.beginning.cards" 
+        class="story-card glass-panel glass-panel-interactive"
+        [class.highlight-card]="card.highlight">
+        
+        <div class="card-icon-wrapper" [class.snap-bg]="card.highlight">
+          <span class="card-emoji">{{ card.emoji }}</span>
+        </div>
+        <h3 class="card-title">{{ card.title }}</h3>
+        <p class="card-text">{{ card.text }}</p>
+      </div>
+    </div>
+
+    <!-- Chapter Pagination Stepper -->
+    <app-chapter-nav 
+      prevRoute="/home" 
+      prevLabel="Home" 
+      nextRoute="/vitopia" 
+      nextLabel="Chapter 2: VITOPIA" 
+      chapterIndex="Chapter 1 of 7">
+    </app-chapter-nav>
+  </div>
+</section>

@@ -1,0 +1,142 @@
+<section id="reveal" class="section-wrapper reveal-section">
+  <div class="container-narrow">
+    
+    <!-- Stage 0: Initial Call to Action -->
+    <div *ngIf="currentStage() === 0" class="pre-reveal-card glass-panel">
+      <div class="sparkle-circle">
+        <span class="sparkle-icon">🎂</span>
+      </div>
+
+      <span class="section-tag">{{ reveal.chapterTag }}</span>
+      <h2 class="section-heading">{{ reveal.heading }}</h2>
+      <p class="section-subheading">{{ reveal.subheading }}</p>
+
+      <div class="cta-wrapper">
+        <button class="reveal-trigger-btn" (click)="startReveal()">
+          <span class="btn-text">{{ reveal.buttonText }}</span>
+          <span class="btn-glow"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Theatrical Fullscreen Sequence (Stages 1, 2, 3, 4) -->
+    <div 
+      *ngIf="currentStage() > 0" 
+      class="theater-backdrop" 
+      [class.grand-stage]="currentStage() === 4">
+      
+      <!-- Subtle Floating Sparkles -->
+      <div class="ambient-stars">
+        <span class="ambient-star" *ngFor="let s of [1,2,3,4,5,6,7,8,9,10]">✨</span>
+      </div>
+
+      <!-- Stage 1: One last thing… -->
+      <div *ngIf="currentStage() === 1" class="reveal-stage stage-1">
+        <p class="slow-appear font-serif">{{ reveal.stage1Text }}</p>
+      </div>
+
+      <!-- Stage 2: You were never just my friend. -->
+      <div *ngIf="currentStage() === 2" class="reveal-stage stage-2">
+        <p class="slow-appear font-serif">{{ reveal.stage2Text }}</p>
+      </div>
+
+      <!-- Stage 3: You are my Sister ❤️ -->
+      <div *ngIf="currentStage() === 3" class="reveal-stage stage-3">
+        <h2 class="sister-proclamation font-title gold-glow">
+          {{ reveal.stage3Text }}
+        </h2>
+      </div>
+
+      <!-- Stage 4: Grand Birthday Climax -->
+      <div *ngIf="currentStage() === 4" class="reveal-stage stage-4">
+        
+        <div class="birthday-badge-pill">
+          <span>{{ reveal.queenBadge }}</span>
+        </div>
+
+        <h1 class="grand-birthday-title">
+          <span class="grand-happy">{{ reveal.grandHappy }}</span>
+          <span class="grand-name gold-text">{{ reveal.grandName }}</span>
+        </h1>
+
+        <p class="grand-birthday-subtitle font-serif">
+          {{ reveal.grandSubtitle }}
+        </p>
+
+        <!-- Hero Photo Frame -->
+        <div class="hero-portrait-frame">
+          <div class="gold-crown-icon">👑</div>
+          <div class="portrait-glow-ring"></div>
+          <div class="portrait-img-box">
+            <img src="assets/images/likki/bday-img.jpeg" [alt]="content.profile.sisterName" loading="eager">
+          </div>
+          <div class="portrait-label">
+            <span class="name-tag">{{ content.profile.nickname }}</span>
+            <span class="role-tag">{{ reveal.portraitCaption }}</span>
+          </div>
+        </div>
+
+        <!-- Birthday Highlight Reel Video -->
+        <div *ngIf="reveal.highlightVideo" class="highlight-video-card glass-panel">
+          <div class="video-card-header">
+            <span class="video-badge">🎬 Special Highlight Reel</span>
+            <h3 class="video-title">{{ reveal.highlightVideo.title }}</h3>
+            <p class="video-sub">{{ reveal.highlightVideo.subtitle }}</p>
+          </div>
+
+          <div class="video-player-wrapper">
+            <video
+              [src]="reveal.highlightVideo.url"
+              controls
+              playsinline
+              preload="metadata"
+              class="reveal-video-player"
+            ></video>
+          </div>
+
+          <p class="video-caption">{{ reveal.highlightVideo.caption }}</p>
+        </div>
+
+        <!-- Birthday Wishes Grid -->
+        <div class="wishes-summary-box glass-panel">
+          <div *ngFor="let wish of reveal.wishes" class="wish-item">
+            <span class="wish-icon">{{ wish.icon }}</span>
+            <span class="wish-text">{{ wish.text }}</span>
+          </div>
+        </div>
+
+        <!-- Footer Sign-off -->
+        <footer class="birthday-footer">
+          <div class="footer-divider">
+            <span class="gold-line"></span>
+            <span class="heart-symbol">❤️</span>
+            <span class="gold-line"></span>
+          </div>
+
+          <p class="footer-love font-serif">
+            {{ reveal.footerLove }}
+          </p>
+          <p class="footer-sub">
+            {{ reveal.footerSub }}
+          </p>
+
+          <button class="replay-btn" (click)="restartReveal()">
+            <span>{{ reveal.replayBtnText }}</span>
+          </button>
+        </footer>
+
+      </div>
+
+    </div>
+
+    <!-- Chapter Navigation Stepper -->
+    <app-chapter-nav 
+      prevRoute="/letter" 
+      prevLabel="Chapter 6: The Letter" 
+      nextRoute="/home" 
+      nextLabel="Back to Home 🏠" 
+      chapterIndex="Final Chapter">
+    </app-chapter-nav>
+
+  </div>
+</section>

@@ -1,0 +1,26 @@
+<div 
+  *ngIf="lightbox.isOpen() && lightbox.currentMedia() as media" 
+  class="lightbox-overlay"
+  (click)="close()">
+  
+  <button class="lightbox-close-btn" (click)="close()" aria-label="Close media viewer">
+    ✕
+  </button>
+
+  <div class="lightbox-modal-content" (click)="$event.stopPropagation()">
+    <!-- Video Display -->
+    <div *ngIf="media.type === 'video'" class="lightbox-video-box">
+      <video [src]="media.url" controls autoplay playsinline class="lightbox-video"></video>
+    </div>
+
+    <!-- Image Display -->
+    <div *ngIf="media.type !== 'video'" class="lightbox-image-box">
+      <img [src]="media.url" [alt]="media.caption">
+    </div>
+
+    <div class="lightbox-caption-bar">
+      <span *ngIf="media.tag" class="lightbox-tag">{{ media.tag }}</span>
+      <p class="lightbox-caption-text">{{ media.caption }}</p>
+    </div>
+  </div>
+</div>

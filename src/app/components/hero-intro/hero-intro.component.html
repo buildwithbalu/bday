@@ -1,0 +1,154 @@
+<section id="hero" class="hero-section">
+  <!-- Glowing Background Orbs -->
+  <div class="glow-orb orb-gold"></div>
+  <div class="glow-orb orb-rose"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span class="sparkle">✨</span>
+      <span>{{ content.hero.badge }}</span>
+      <span class="sparkle">✨</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="title-line">{{ content.hero.titlePrefix }}</span>
+      <span class="title-highlight">{{ content.hero.titleHighlight }}</span>
+    </h1>
+
+    <p class="hero-subtitle font-serif">
+      {{ content.hero.quote }}
+    </p>
+
+    <div class="hero-badge-container">
+      <div class="relation-chip">
+        <span class="chip-label">For:</span>
+        <span class="chip-value">{{ content.profile.nickname }}</span>
+      </div>
+      <div class="relation-divider">•</div>
+      <div class="relation-chip">
+        <span class="chip-label">From:</span>
+        <span class="chip-value">Your {{ content.profile.myCallName }}</span>
+      </div>
+    </div>
+
+    <!-- THEN VS NOW COMPARISON SECTION -->
+    <div class="then-now-container" *ngIf="content.hero.heroComparison">
+      <div class="comparison-header">
+        <span class="comparison-badge">Timeline Highlight</span>
+        <h2 class="comparison-title">{{ content.hero.heroComparison.heading }}</h2>
+        <p class="comparison-sub">{{ content.hero.heroComparison.subheading }}</p>
+      </div>
+
+      <div class="comparison-grid">
+        <!-- THEN CARD -->
+        <div class="comparison-card card-then">
+          <div class="card-badge-tag">{{ content.hero.heroComparison.firstYear.label }}</div>
+          <div class="card-photo-wrapper">
+            <img [src]="content.hero.heroComparison.firstYear.image" [alt]="content.hero.heroComparison.firstYear.label" class="comparison-img" loading="lazy" />
+          </div>
+          <p class="card-caption">{{ content.hero.heroComparison.firstYear.caption }}</p>
+        </div>
+
+        <!-- CENTER BADGE -->
+        <div class="comparison-center-divider">
+          <div class="center-line"></div>
+          <div class="center-badge">
+            <span class="center-icon">💫</span>
+            <span class="center-text">{{ content.hero.heroComparison.centralCaption }}</span>
+          </div>
+          <div class="center-line"></div>
+        </div>
+
+        <!-- NOW CARD -->
+        <div class="comparison-card card-now">
+          <div class="card-badge-tag highlight">{{ content.hero.heroComparison.current.label }}</div>
+          <div class="card-photo-wrapper">
+            <img [src]="content.hero.heroComparison.current.image" [alt]="content.hero.heroComparison.current.label" class="comparison-img" loading="lazy" />
+          </div>
+          <p class="card-caption">{{ content.hero.heroComparison.current.caption }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOM VOICE MESSAGE AUDIO PLAYER -->
+    <div class="voice-player-container" *ngIf="content.hero.voiceMessage">
+      <audio
+        #audioPlayer
+        [src]="content.hero.voiceMessage.url"
+        preload="metadata"
+        (timeupdate)="onTimeUpdate()"
+        (loadedmetadata)="onLoadedMetadata()"
+        (ended)="onAudioEnded()"
+        (error)="onAudioError()"
+      ></audio>
+
+      <div class="voice-player-card">
+        <div class="player-top">
+          <div class="player-icon-box">
+            <span class="mic-icon">🎙️</span>
+          </div>
+          <div class="player-titles">
+            <h3 class="player-title">{{ content.hero.voiceMessage.title }}</h3>
+            <p class="player-sub">{{ content.hero.voiceMessage.subtitle }}</p>
+          </div>
+        </div>
+
+        <p class="player-caption">{{ content.hero.voiceMessage.caption }}</p>
+
+        <!-- Controls Bar -->
+        <div class="player-controls-bar">
+          <button
+            type="button"
+            class="play-btn"
+            (click)="togglePlay()"
+            [attr.aria-label]="isPlaying() ? 'Pause voice message' : 'Play voice message'"
+          >
+            <span *ngIf="!isPlaying()" class="control-icon">▶</span>
+            <span *ngIf="isPlaying()" class="control-icon">⏸</span>
+          </button>
+
+          <div class="track-area">
+            <input
+              type="range"
+              class="seek-slider"
+              min="0"
+              [max]="duration() || 100"
+              [value]="currentTime()"
+              (input)="seekAudio($event)"
+              aria-label="Audio timeline"
+            />
+            <div class="time-display">
+              <span class="current-time">{{ formatTime(currentTime()) }}</span>
+              <span class="total-time">{{ duration() > 0 ? formatTime(duration()) : '--:--' }}</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="mute-btn"
+            (click)="toggleMute()"
+            [attr.aria-label]="isMuted() ? 'Unmute' : 'Mute'"
+          >
+            <span>{{ isMuted() ? '🔇' : '🔊' }}</span>
+          </button>
+        </div>
+
+        <!-- Note if audio file is not present yet -->
+        <div *ngIf="hasError()" class="audio-notice">
+          ℹ️ Voice audio ready for file at <code>{{ content.hero.voiceMessage.url }}</code>. (Place your MP3 there anytime!)
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigate to Chapter 1 -->
+    <div class="scroll-cue">
+      <a routerLink="/beginning" class="begin-journey-btn">
+        <span class="btn-shine"></span>
+        <span class="btn-text">{{ content.hero.buttonText }}</span>
+        <svg class="btn-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
